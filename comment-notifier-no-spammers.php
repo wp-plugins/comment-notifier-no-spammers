@@ -3,7 +3,7 @@
  * Plugin Name: Comment Notifier No Spammers
  * Plugin URI: https://github.com/isabelc/Comment-Notifier-No-Spammers
  * Description: Subscribe to comments and notify only approved comment authors, not spammers.
- * Version: 0.1.9
+ * Version: 0.2
  * Author: Isabel Castillo
  * Author URI: http://isabelcastillo.com
  * License: GPL2
@@ -80,11 +80,8 @@ function cmnt_nospammers_wp_set_comment_status($comment_id, $status)
 function cmnt_nospammers_thankyou($comment_id)
 {
     global $wpdb;
-
     $options = get_option('cmnt_nospammers');
-
-    if (!isset($options['ty_enabled']))
-    {
+    if (!isset($options['ty_enabled'])){
         return;
     }
 
@@ -326,9 +323,9 @@ function cmnt_nospammers_mail(&$to, &$subject, &$message, $html=null)
     if ($html == null) $html = isset($options['html']);
 
     if ($html)
-        $headers .= "Content-type: text/html; charset=UTF-8\n";
+        $headers = "Content-type: text/html; charset=UTF-8\n";
     else
-        $headers .= "Content-type: text/plain; charset=UTF-8\n";
+        $headers = "Content-type: text/plain; charset=UTF-8\n";
 
     $headers .= 'From: "' . $options['name'] . '" <' . $options['from'] . ">\n";
 
@@ -336,7 +333,6 @@ function cmnt_nospammers_mail(&$to, &$subject, &$message, $html=null)
 }
 /** 
 * Load plugin textdomain
-* @return void
 */
  function cmnt_nospammers_load_textdomain() {
 	load_plugin_textdomain( 'cmnt_nospammers_options_page', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
