@@ -3,7 +3,7 @@
  * Plugin Name: Comment Notifier No Spammers
  * Plugin URI: https://github.com/isabelc/Comment-Notifier-No-Spammers
  * Description: Subscribe to comments and notify only approved comment authors, not spammers.
- * Version: 0.2
+ * Version: 1.0
  * Author: Isabel Castillo
  * Author URI: http://isabelcastillo.com
  * License: GPL2
@@ -33,8 +33,7 @@
  * '1' - approved, 'spam' if it is spam. The comment_id is the database id of the
  * comment which is already saved a this point.
  */
-function cmnt_nospammers_comment_post($comment_id, $status)
-{
+function cmnt_nospammers_comment_post($comment_id, $status) {
 	// Only subscribe if comment is approved; skip those in moderation.
     if (($status === 1) && isset($_POST['subscribe']))
     {
@@ -131,28 +130,32 @@ function cmnt_nospammers_comment_form()
 
 /** Replace placeholders in body message with subscriber data and post/comment
  * data.
- *
  * @param <type> $message
  * @param <type> $data
  * @return <type>
  */
-function cmnt_nospammers_replace($message, $data)
-{
+function cmnt_nospammers_replace($message, $data) {
     $options = get_option('cmnt_nospammers');
-
-    $message = str_replace('{title}', $data->title, $message);
-    $message = str_replace('{link}', $data->link, $message);
-    $message = str_replace('{comment_link}', $data->comment_link, $message);
-    $message = str_replace('{author}', $data->author, $message);
-
-    $temp = strip_tags($data->content);
-    if ($options['length'] && strlen($temp) > $options['length'])
-    {
-        $x = strpos($temp, ' ', $options['length']);
-        if ($x !== false) $temp = substr($temp, 0, $x) . '...';
-    }
+	$message = str_replace('{title}', $data->title, $message);
+	$message = str_replace('{link}', $data->link, $message);
+	$message = str_replace('{comment_link}', $data->comment_link, $message);
+	$message = str_replace('{author}', $data->author, $message);
+	$temp = strip_tags($data->content);
+	$length = empty($options['length']) ? 155 : htmlspecialchars($options['length']);
+	
+	if ( ! is_numeric($length) ) {
+		$length = 155;
+	}
+	
+	if ( $length ) {
+		if ( strlen($temp) > $length ) {
+			$x = strpos($temp, ' ', $length);
+			if ($x !== false) {
+				$temp = substr($temp, 0, $x) . '...';
+			}
+		}
+	}
     $message = str_replace('{content}', $temp, $message);
-
     return $message;
 }
 
@@ -216,13 +219,11 @@ function cmnt_nospammers_notify($comment_id)
 
     $url = get_option('home') . '/?';
 
-    if (!empty($options['copy']))
-    {
+    if (!empty($options['copy'])) {
         $fake->token = 'fake';
         $fake->id = 0;
         $fake->email = $options['copy'];
         $fake->name = 'Test subscriber';
-
         $subscriptions[] = $fake;
     }
 
@@ -288,10 +289,12 @@ function cmnt_nospammers_init()
 
 
     cmnt_nospammers_unsubscribe($id, $token);
+	
+	$unsubscribe_url = empty($options['unsubscribe_url']) ? '' : $options['unsubscribe_url'];
 
-    if ($options['unsubscribe_url']) header('Location: ' . $options['unsubscribe_url']);
-    else
-    {
+    if ( $unsubscribe_url ) {
+		header('Location: ' . $unsubscribe_url);
+	} else {
         echo '<html><head>';
         echo '<meta http-equiv="refresh" content="3;url=' . get_option('home') . '"/>';
         echo '</head><body>';
