@@ -3,8 +3,8 @@ Contributors: isabel104
 Donate link: https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=me%40isabelcastillo%2ecom
 Tags: comments, comments reply, comments subscribe, notifications, notify, notifier, subscribe, subscriptions
 Requires at least: 3.7
-Tested up to: 4.0
-Stable Tag: 1.0
+Tested up to: 4.1
+Stable tag: 1.1
 License: GNU Version 2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -52,11 +52,11 @@ In your WordPress dashboard -> Plugins -> Add New, search for "Comment Notifier 
 
 Go to "Settings --> Comment Notifier No Spammers". You must enter a "**Notification Sender Email**".
 
-Some web hosts require that this be an email at your actual website. For example, if your website is **www.mysite.com**, then your sender email must be **something@mysite.com**, in which the first part "something" can be anything as long as it ends with **"@mysite.com"**. Bluehost is one host that requires this.
+Some web hosts require that this be an email at your actual website. For example, if your website is `www.mysite.com`, then your sender email must be `something@mysite.com`, in which the first part "something" can be anything as long as it ends with **"@mysite.com"**. Bluehost is one host that requires this.
 
-However, Godaddy hosting does not require this. GoDaddy will allow you to use any email address as the sender email (for example, a Gmail or Yahoo email). If you are unsure whether your web host allows this, then stick with an email at your own site to ensure that your notification emails will be sent.
+However, GoDaddy hosting does not require this. GoDaddy will allow you to use any email address as the sender email (for example, a Gmail or Yahoo email). If you are unsure whether your web host allows this, then stick with an email at your own site to ensure that your notification emails will be sent.
 
-In addition to the requirement described above, some web hosts require that the email address be an actual existing address. For example, if your site is www.mysite.com, and you want to use "**wordpress@mysite.com**" as your "Notification Sender Email", but that email does not actually exist, then your notification emails will not send. In this case, you would have to create the email address "**wordpress@mysite.com**" on your hosting server. Please note that "Forwarding Email Addresses" will not work for this since they are not actual email boxes, but rather they are just aliases.
+In addition to the requirement described above, some web hosts require that the email address be an actual existing address. For example, if your site is `www.mysite.com`, and you want to use "`wordpress@mysite.com`" as your "Notification Sender Email", but that email does not actually exist, then your notification emails will not send. In this case, you would have to create the email address "`wordpress@mysite.com`" on your hosting server. Please note that "Forwarding Email Addresses" will not work for this since they are not actual email boxes, but rather they are just aliases.
 
 **Step 3 (Optional) Customize the Settings**
 
@@ -66,6 +66,10 @@ Optionally, you can customize the rest of the settings on this page.
 
 If you were using Comment Notifier plugin, then deactivate it right away to avoid having it add new spammers to your comment_notifier list.
 
+Only once, upon activation, this plugin will clean up your "comment_notifier" list (database table) by removing all spammer emails that were subscribed by the Comment Notifier Plugin. It will also empty your Comments "Trash" and "Spam". This is done automatically upon activation.
+
+Your existing approved comments, and legit subscribers, will not be lost.
+
 == Frequently Asked Questions ==
 
 = Why are Test Emails not sending? =
@@ -74,6 +78,13 @@ For test emails to work, you must enter an email address in the "Email address w
 **Tip:** Do not use the sender address for this; some mail servers do not accept "from" and "to" set to the same value.
 
 == Changelog ==
+
+= 1.1 =
+* New - If you were manually adding the subscription checkbox to your template files, you must update it since the input checkbox code has changed. Specifically, the name and id of the checkbox input has changed from 'subscribe' to 'cnns_subscribe'. See the settings page for the whole snippet.
+* Fix - Every approved comment author was being subscribed, whether they checked the box to subscribe, or not.
+* Tweak - Improved some option descriptions.
+* Maintenance - Removed a PHP notice.
+* Maintenance - Updated .pot translation file.
 
 = 1.0 =
 * Fix - Removed several PHP errors from the options page.
@@ -90,6 +101,9 @@ For test emails to work, you must enter an email address in the "Email address w
 * First release.
 
 == Upgrade Notice ==
+
+= 1.1 =
+Fix - Every approved comment author was being subscribed even if they did not subcribe.
 
 = 1.0 =
 Removed several PHP errors from the options page.
