@@ -3,7 +3,7 @@
 Plugin Name: Comment Notifier No Spammers
 Plugin URI: https://github.com/isabelc/Comment-Notifier-No-Spammers
 Description: Subscribe to comments and notify only approved comment authors, not spammers.
-Version: 1.1
+Version: 1.2
 Author: Isabel Castillo
 Author URI: http://isabelcastillo.com
 License: GPL2
@@ -137,22 +137,18 @@ function cmnt_nospammers_thankyou( $comment_id ) {
 }
 
 /**
- * Add a subscribe checkbox after the form content if the theme calls the right function
- * and the user want the checkbox automatically added. The options panel checks the theme
- * compatibility.
+ * Add a subscribe checkbox after the form content.
  */
 function cmnt_nospammers_comment_form() {
-
 	$options = get_option('cmnt_nospammers');
 	if (isset($options['checkbox'])) {
-		echo '<p style="clear:both"><input style="width: 20px" type="checkbox" value="1" name="cnns_subscribe" id="cnns_subscribe"';
+		echo '<p class="cnns-comment-subscription"><input type="checkbox" value="1" name="cnns_subscribe" id="cnns_subscribe"';
 		if (isset($options['checked'])) {
 			echo ' checked="checked"';
 		}
-		echo '/>&nbsp;<label style="margin:0; padding:0; position:relative; left:0; top:0;" for="cnns_subscribe">' . $options['label'] . '</label></p>';
+		echo '/>&nbsp;<label id="cnns-label" for="cnns_subscribe">' . $options['label'] . '</label></p>';
 	}
 }
-
 /** Replace placeholders in body message with subscriber data and post/comment
  * data.
  * @param <type> $message
